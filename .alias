@@ -1,0 +1,123 @@
+# #############################################################################
+# #############################################################################
+# My personal aliases
+# git clone https://github.com/kjhskr/alias
+# #############################################################################
+# #############################################################################
+
+#if test (($OSTYPE == solaris) || ($OSTYPE == solaris2.9)); then
+#if [ `uname` = SunOS ] ; then
+#else
+#fi
+
+# ################################################
+# Unix/Linus system commands
+# ################################################
+echo "     alias group 1"
+alias c='cd'
+alias c-='cd -'
+alias u1='cd ../'
+alias u2='cd ../../'
+alias u3='cd ../../../'
+alias u4='cd ../../../../'
+alias u5='cd ../../../../../'
+alias u6='cd ../../../../../../'
+alias u7='cd ../../../../../../../'
+alias u8='cd ../../../../../../../../'
+alias u9='cd ../../../../../../../../../'
+
+alias l='ls -ahl'
+alias ll='ls -ahlF'
+alias llc='clear; ls -ahlF;'
+alias lld='ls -ahlF | grep / | grep -v lrwxrwxrwx'
+alias ltr='ls -Fhltr'
+
+alias cls=clear
+alias cmore='clear; more '
+alias cpr='cp -pr'
+alias d='date'
+alias g='grep'
+alias m='more'
+alias le='less'
+alias t='tail'
+alias h=history
+alias mkd=mkdir
+alias rmr='rm -r'
+alias rmrf='rm -rf'
+alias xtrm='xterm -bg black -bd green -fg green -fn Courier -title ~ &'
+alias q='quota -v kbond'
+alias rsync='rsync -v'
+
+# ################################################
+# Synchronicity
+# ################################################
+alias dci='dssc ci -retain'
+alias dco='dssc co -retain'
+alias ddiff='dssc diff'
+alias dls='dssc ls -report status'
+alias dmkfolder='dssc mkfolder'
+alias dpop='dssc pop -retain'
+alias dretire='dssc retire'
+alias drmfile='dssc rmfile'
+alias drmfolder='dssc rmfolder'
+alias dtag='dssc tag'
+alias durl='dssc url'
+alias dvh='dssc vhistory'
+
+# ################################################
+# Remote login & SSH
+# ################################################
+echo "     alias group 3"
+
+# ################################################
+# LSF Aliases
+# ################################################
+echo "     alias group 5"
+alias bj=bjobs
+alias bjw='bjobs -w'
+alias bq=bqueues
+alias bh=bhosts
+alias bsub='bsub -q lsf';
+alias bsubi='bsub -q lsf -Is';
+
+# bsub to sun boxes
+alias sbsub='bsub -q solaris';
+alias sbsubi='bsub -q int_solaris -Is';
+
+# bsub to linux boxes
+alias lbsubs='bsub -q small -Is -N';
+alias lbsub='bsub -q medium -N';
+alias lbsubl='bsub -q large -R "rusage[mem=40000]" -N';
+alias lbsubp='bsub -q priority -R "select[oslevel==5] rusage[mem=40000]" -N';
+alias lbsubi='bsub -q int -Is -N';
+alias lbsubt='bsub -q test_q -N';
+
+# bsub apps
+alias quota='bsub -q solaris -N quota $1'
+alias tar='bsub -q short -N tar $1'
+alias gunzip='bsub -q short -N gunzip $1'
+alias gzip='bsub -q short -N gzip $1'
+alias gtar='bsub -q short -N /bin/gtar $1'
+alias gtarc='bsub -q short -N /bin/gtar -zcvf $1';
+alias gtarx='bsub -q short -N /bin/gtar -zxvf $1';
+alias bgvim='bsub -q medium -Is /sopt/utils/vim/Linuxi686/vim62/bin/gvim'
+alias brm='bsub -q medium rm'
+alias bvi='bsub -q medium /usr/dt/bin/dtterm -e vim'
+alias dtterm-sun='bsub -q int_solaris -N -R solaris /usr/dt/bin/dtterm -ls'
+alias dtterm-hpux='bsub -q lsf -N -R hpux /usr/dt/bin/dtterm -ls'
+alias hpterm='bsub -q lsf -N -R hpux /usr/dt/bin/hpterm -ls'
+alias xterm-linux='bsub -q lsf -N -R medium /usr/X11R6/bin/xterm -ls'
+alias xterm-sun='bsub -q lsf -N -R solaris /usr/X/bin/xterm -ls'
+alias xterm-hpux='bsub -q lsf -N -R hpux /usr/bin/X11/xterm -ls'
+
+# bsub tools
+alias ss='bsub -Is -N -q int_solaris signalscan';
+
+# ################################################
+# Load my work aliases
+# ################################################
+if [ -f ~/MyWork.alias ] ; then
+  echo "     MyWork.alias found"
+  source ~/MyWork.alias
+fi
+
