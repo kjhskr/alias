@@ -1,6 +1,7 @@
 # #############################################################################
 # #############################################################################
 # My personal aliases
+# git clone https://github.com/kjhskr/alias
 # #############################################################################
 # #############################################################################
 
@@ -8,6 +9,22 @@
 #if [ `uname` = SunOS ] ; then
 #else
 #fi
+
+# ################################################
+# Miscellaneous aliases
+# ################################################
+# The following will not support the 'watch -n <value>' option.
+function _watch_alias() {
+    watch $(alias "$@" | cut -d\' -f2)
+}
+alias watcha='_watch_alias'
+
+
+function _find_mxs_cell() {
+  #export TEMP=`find extract_netlist_from_schematic.adcsdet.20200925/ihnl/ -name $1`
+  export TEMP=`find $1 -name $2`
+}
+alias find_mxs_cell='_find_mxs_cell'
 
 # ################################################
 # Unix/Linus system commands
@@ -25,35 +42,49 @@ alias u7='cd ../../../../../../../'
 alias u8='cd ../../../../../../../../'
 alias u9='cd ../../../../../../../../../'
 
-alias l='ls -ahl'
-alias ll='ls -ahlF'
-alias llc='clear; ls -ahlF;'
-alias lld='ls -ahlF | grep / | grep -v lrwxrwxrwx'
-alias ltr='ls -Fhltr'
+alias du1='du -a -h --time --max-depth=1'
+alias du2='du -a -h --time --max-depth=2'
+alias du3='du -a -h --time --max-depth=3'
+alias du4='du -a -h --time --max-depth=4'
+alias du5='du -a -h --time --max-depth=5'
+
+alias l='ls -ahlF --color=auto'
+alias ll='ls -ahlF --color=auto'
+alias llc='clear; ls -ahlF --color=auto;'
+alias lld='ls -ahlF --color=auto | grep --color "^d......... .*/" '
+alias ltr='ls -Fhltr --color=auto'
 
 alias cls=clear
 alias cmore='clear; more '
 alias cpr='cp -pr'
 alias d='date'
 alias g='grep'
-alias m='more'
-alias le='less'
-alias t='tail'
 alias h=history
-alias mkd=mkdir
+alias le='less'
+alias m='more'
+alias mkdirp='mkdir -p'
+alias q='quota -v kbond'
 alias rmr='rm -r'
 alias rmrf='rm -rf'
-alias xtrm='xterm -bg black -bd green -fg green -fn Courier -title ~ &'
-alias q='quota -v kbond'
 alias rsync='rsync -v'
+alias t='tail'
+alias treea='tree --charset ASCII'
+alias xtrm='xterm -bg black -bd green -fg green -fn Courier -title ~ &'
 
 # ################################################
 # Synchronicity
 # ################################################
+function _dstat() { 
+    dssc ls -report status "$@" \
+        | sed -e "s/\(.*Locally Modified.*\)/`echo -e "\e[1;38;5;196m\1\e[0m"`/" \
+        | sed -e "s/\(.*Needs Update.*\)/`echo -e "\e[38;5;184m\1\e[0m"`/";
+}
+
 alias dci='dssc ci -retain'
+#alias dci='dssc ci -retain -keys kv'
 alias dco='dssc co -retain'
 alias ddiff='dssc diff'
-alias dls='dssc ls -report status'
+#alias dls='dssc ls -report status'
 alias dmkfolder='dssc mkfolder'
 alias dpop='dssc pop -retain'
 alias dretire='dssc retire'
@@ -62,6 +93,9 @@ alias drmfolder='dssc rmfolder'
 alias dtag='dssc tag'
 alias durl='dssc url'
 alias dvh='dssc vhistory'
+alias dtag='dssc tag'
+#alias dls='dssc ls -report status'
+alias dls='_dstat'
 
 # ################################################
 # Remote login & SSH
@@ -72,45 +106,45 @@ echo "     alias group 3"
 # LSF Aliases
 # ################################################
 echo "     alias group 5"
+alias bh=bhosts
 alias bj=bjobs
 alias bjw='bjobs -w'
 alias bq=bqueues
-alias bh=bhosts
-alias bsub='bsub -q lsf';
-alias bsubi='bsub -q lsf -Is';
 
 # bsub to sun boxes
-alias sbsub='bsub -q solaris';
-alias sbsubi='bsub -q int_solaris -Is';
+#alias sbsub='bsub -q solaris';
+#alias sbsubi='bsub -q int_solaris -Is';
 
-# bsub to linux boxes
-alias lbsubs='bsub -q small -Is -N';
+# bsub to Linux boxes
+alias lbsubCOS7='bsub -R 'select[osmajor=CENT7]' -q medium -N';
+alias lbsubCOS6='bsub -R 'select[osmajor=CENT6]' -q medium -N';
 alias lbsub='bsub -q medium -N';
+alias lbsubi='bsub -q int -Is -N';
 alias lbsubl='bsub -q large -R "rusage[mem=40000]" -N';
 alias lbsubp='bsub -q priority -R "select[oslevel==5] rusage[mem=40000]" -N';
-alias lbsubi='bsub -q int -Is -N';
+alias lbsubs='bsub -q small -Is -N';
 alias lbsubt='bsub -q test_q -N';
+alias watchlsf='watch bjobs -w'
 
 # bsub apps
-alias quota='bsub -q solaris -N quota $1'
-alias tar='bsub -q short -N tar $1'
-alias gunzip='bsub -q short -N gunzip $1'
-alias gzip='bsub -q short -N gzip $1'
-alias gtar='bsub -q short -N /bin/gtar $1'
-alias gtarc='bsub -q short -N /bin/gtar -zcvf $1';
-alias gtarx='bsub -q short -N /bin/gtar -zxvf $1';
 alias bgvim='bsub -q medium -Is /sopt/utils/vim/Linuxi686/vim62/bin/gvim'
 alias brm='bsub -q medium rm'
 alias bvi='bsub -q medium /usr/dt/bin/dtterm -e vim'
-alias dtterm-sun='bsub -q int_solaris -N -R solaris /usr/dt/bin/dtterm -ls'
 alias dtterm-hpux='bsub -q lsf -N -R hpux /usr/dt/bin/dtterm -ls'
+alias dtterm-sun='bsub -q int_solaris -N -R solaris /usr/dt/bin/dtterm -ls'
+alias tar='bsub -q short -N /tools/bin/tar $1'
+alias tarc='bsub -q short -N /tools/bin/tar -zcvf $1';
+alias tarx='bsub -q short -N /tools/bin/tar -zxvf $1';
+alias gunzip='bsub -q short -N /tools/bin/gunzip $1'
+alias gzip='bsub -q short -N /tools/bin/gzip $1'
 alias hpterm='bsub -q lsf -N -R hpux /usr/dt/bin/hpterm -ls'
+alias quota='bsub -q solaris -N quota $1'
+alias xterm-hpux='bsub -q lsf -N -R hpux /usr/bin/X11/xterm -ls'
 alias xterm-linux='bsub -q lsf -N -R medium /usr/X11R6/bin/xterm -ls'
 alias xterm-sun='bsub -q lsf -N -R solaris /usr/X/bin/xterm -ls'
-alias xterm-hpux='bsub -q lsf -N -R hpux /usr/bin/X11/xterm -ls'
 
 # bsub tools
-alias ss='bsub -Is -N -q int_solaris signalscan';
+#alias ss='bsub -Is -N -q int_solaris signalscan';
 
 # ################################################
 # Load my work aliases
